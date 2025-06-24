@@ -1,6 +1,6 @@
 # VM-Menu
 
-- A beginner-friendly PowerShell script to manage Azure Virtual Machines interactively.
+- PowerShell script to manage Azure Virtual Machines interactively.
 
 ## Features
 
