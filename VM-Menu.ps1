@@ -15,7 +15,7 @@ $vmrg
 write-output " "
 $rgname = Read-Host "Enter the Resource Group name" 
 write-output " "
-# Lists VM's in the RG
+# Lists all VM's in the RG
 Write-output "--------- Virtual Machines ---------"
 $vmlist = get-azvm -resourcegroupname $rgname
 $vmlist | select-object Name
