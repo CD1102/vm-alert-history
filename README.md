@@ -10,8 +10,9 @@
 - Accepts VM name and Resource Group from user input
 - Menu-driven options to start, stop, restart, or check status of a VM
 - Outputs operation results to the console
+- - Add looping menu to repeat until exit
 
 ## Next Steps
-- Add looping menu to repeat until exit
 - Add error handling for Azure cmdlets
 - Add support for parameters
+- Add support for multiple/batch VMs
