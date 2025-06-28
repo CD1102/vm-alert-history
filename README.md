@@ -11,8 +11,8 @@
 - Menu-driven options to start, stop, restart, or check status of a VM
 - Outputs operation results to the console
 - Added looping menu to repeat until exit
-
-## Next Steps
 - Add error handling for Azure cmdlets
+- Ability to change subscriptions
+## Next Steps
 - Add support for parameters
 - Add support for multiple/batch VMs
