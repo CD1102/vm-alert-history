@@ -3,7 +3,8 @@ try{
 $connected = Read-Host "Are you connected to Azure? (yes/no)"
 if ($connected.ToLower() -ne "yes") {
     Write-Output "You must be connected to Azure to run this script. A login option will show up shortly...."
-    Connect-AzAccount
+    Connect-AzAccount 
+
 }
 }
 catch {
@@ -59,100 +60,114 @@ while ($continue.ToLower() -eq "y") {
     $number = Read-Host "Select an option (1-7)"
 
     # VM Operations
-    switch ($number) {
-        1 {
-            try{
-            Write-Output "Option 1 selected."
-            Write-Output "Starting the VM..."
-            Start-AzVM -Name $global:vmname -ResourceGroupName $global:rgname
-            Write-Output "VM started."
+        switch ($number) {
+            1 {
+                try {
+                    Write-Output "Option 1 selected."
+                    Write-Output "Starting the VM..."
+                    Start-AzVM -Name $global:vmname -ResourceGroupName $global:rgname
+                    Write-Output "VM started."
+                }
+                catch {
+                    write-output(" ")
+                    Write-Output "Error starting the VM: $($_.Exception.Message)"
+                    start-sleep -seconds 2
+                    continue
+                }
             }
-            catch {
-                Write-Output "Error starting the VM: $_"
-                exit
+            2 {
+                try {
+                    Write-Output "Option 2 selected."
+                    Write-Output "Stopping the VM..."
+                    Stop-AzVM -Name $global:vmname -ResourceGroupName $global:rgname -Force
+                    Write-Output "VM stopped."
+                }
+                catch {
+                    write-output(" ")
+                    Write-Output "Error stopping the VM: $($_.Exception.Message)"
+                    start-sleep -seconds 2
+                    continue
+                }
+            }
+            3 {
+                try {
+                    Write-Output "Option 3 selected."
+                    Write-Output "Restarting the VM..."
+                    Restart-AzVM -Name $global:vmname -ResourceGroupName $global:rgname -ErrorAction Stop
+                    Write-Output "VM restarted."
+                }
+                catch {
+                    write-output(" ")
+                    Write-Output "Error restarting the VM: $($_.Exception.Message)"
+                    start-sleep -seconds 2
+                    continue
+                }
+            }
+            4 {
+                try {
+                    Write-Output "Option 4 selected."
+                    Write-Output "Getting VM Status..."
+                    $vm = Get-AzVM -Name $global:vmname -ResourceGroupName $global:rgname -Status
+                    $vmStatus = $vm.Statuses[1].DisplayStatus
+                    Write-Output "VM Status: $vmStatus"
+                }
+                catch {
+                    write-output(" ")
+                    Write-Output "Error getting VM status: $($_.Exception.Message)"
+                    start-sleep -seconds 2
+                    continue
+                }
+            }
+            5 {
+                try {
+                    Write-Output "Option 5 selected."
+                    start-sleep -seconds 2
+                    Clear-Host
+                    Get-RGAndVM
+                }
+                catch {
+                    write-output(" ")
+                    Write-Output "Error changing Resource Group or VM: $($_.Exception.Message)"
+                    start-sleep -seconds 2
+                    continue
+                }
+            }
+            6 {
+                try {
+                    Write-Output "Option 6 selected."
+                    Get-AzSubscription | Select-Object Name
+                    $subscription = Read-Host "Select a subscription:"
+                    Select-AzSubscription -SubscriptionName $subscription
+                    Write-Output "Switched to subscription: $subscription"
+                    start-sleep -seconds 3
+                    Clear-Host
+                    Get-RGAndVM
+                }
+                catch {
+                    write-output(" ")
+                    Write-Output "Error changing Azure subscription: $($_.Exception.Message)"
+                    start-sleep -seconds 2
+                    continue
+                }
+            }
+            7 {
+                try {
+                    Write-Output "Option 7 selected."
+                    Write-Output "Exiting the menu."
+                    start-sleep -seconds 5
+                    exit
+                }
+                catch {
+                    write-output(" ")
+                    Write-Output "Error exiting the script: $($_.Exception.Message)"
+                    start-sleep -seconds 2
+                    continue
+                }
+            }
+            default {
+                Write-Output "Invalid option. Please select a number between 1 and 7."
             }
         }
-        2 {
-            try {
-            Write-Output "Option 2 selected."
-            Write-Output "Stopping the VM..."
-            Stop-AzVM -Name $global:vmname -ResourceGroupName $global:rgname -Force
-            Write-Output "VM stopped."
-         }
-            catch {
-                Write-Output "Error stopping the VM: $_"
-                exit
-            }
-        }
-        3 {
-            try{
-            Write-Output "Option 3 selected."
-            Write-Output "Restarting the VM..."
-            Restart-AzVM -Name $global:vmname -ResourceGroupName $global:rgname
-            Write-Output "VM restarted."
-            }
-            catch {
-                Write-Output "Error restarting the VM: $_"
-                exit
-            }
-        }
-        4 {
-            try {
-            Write-Output "Option 4 selected."
-            Write-Output "Getting VM Status..."
-            $vm = Get-AzVM -Name $global:vmname -ResourceGroupName $global:rgname -Status
-            $vmStatus = $vm.Statuses[1].DisplayStatus
-            Write-Output "VM Status: $vmStatus"
-            }
-            catch {
-                Write-Output "Error getting VM status: $_"
-                exit
-            }
-        }
-        5 {
-            try{
-            Write-output "Option 5 selected."
-            start-sleep -seconds 2
-            Clear-Host
-            Get-RGAndVM
-            }
-            catch {
-                Write-Output "Error changing Resource Group or VM: $_"
-                exit
-            }
-        }
-        6 {
-            try {
-            write-output "Option 6 selected."
-            Get-AzSubscription| Select-Object Name
-            $subscription = read-host "Select a subscription:"
-            Select-AzSubscription -SubscriptionName $subscription
-            Write-Output "Switched to subscription: $subscription"
-            start-sleep -seconds 3
-            Clear-Host
-            Get-RGAndVM
-            }
-            catch {
-                Write-Output "Error changing Azure subscription: $_"
-                exit
-            }
-        }
-        7 {
-            try{
-            Write-Output "Option 7 selected."
-            Write-Output "Exiting the menu."
-            start-sleep -seconds 5
-            exit
-            }
-            catch {
-                Write-Output "Error exiting the script: $_"
-                exit
-            }
-        }
-        default {
-            Write-Output "Invalid option. Please select a number between 1 and 7."
-        }
-    }
 
     # Ask if the user wants to continue
     write-output ""
