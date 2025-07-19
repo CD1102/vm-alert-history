@@ -1,18 +1,24 @@
-# VM-Menu
+# VM-Alert-History
 
-- PowerShell script to manage Azure Virtual Machines interactively.
+PowerShell script to retrieve and analyze Azure VM alerts history across subscriptions.
 
 ## Features
 
 - Connects to Azure (prompts login if needed)
-- Lists all Resource Groups with active VMs  
-- Displays VMs in the selected Resource Group
-- Accepts VM name and Resource Group from user input
-- Menu-driven options to start, stop, restart, or check status of a VM
-- Outputs operation results to the console
-- Added looping menu to repeat until exit
-- Add error handling for Azure cmdlets
-- Ability to change subscriptions
+- Retrieves alerts via Azure Alerts Management REST API
+- Filters alerts by time window (last 30 mins, 24 hours, 7 days, 30 days)
+- Groups and counts frequently alerted VMs based on user-defined thresholds
+- Allows viewing:
+  - Frequently alerted VMs
+  - All alerts
+  - Both
+- Option to export results to Excel with multiple worksheets (Summary, Frequent Alerts, All Alerts)
+- Provides error handling and warning messages for failed subscriptions
+
 ## Next Steps
-- Add support for parameters
-- Add support for multiple/batch VMs
+
+- Add **parameter support** for automated runs (e.g., `-TimeRange 7d -Export Excel`)
+- Add a more variable time frame (deeper or user defined)
+- Add **filtering by resource groups** or **specific VMs**
+- Send reports via email or Teams (automation)
+- Convert to an **Azure Automation Runbook** for scheduled
